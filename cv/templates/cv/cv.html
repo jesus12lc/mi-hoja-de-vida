@@ -1,900 +1,384 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang = "es">
-
+<html lang="es">
 <head>
-    <meta charset = "UTF-8">
+    <meta charset="UTF-8">
+    <title>Hoja de Vida</title>
 
-    <title> 
-        {{ perfil.nombre }} | CV 
-    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap -->
-    <link href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel = "stylesheet">
-    <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f6f9;
-            color: #2c3e50;
-            padding-top: 90px;
-            scroll-behavior: smooth;
+            background-color: #f4f6f9;
         }
 
-        .perfil-img {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-            border-radius: 50%;
-            border: 4px solid #2563eb;
-            background-color: #ffffff;
-            padding: 5px;
-        }
-
-        .card {
-            border: none;
+        .profile-card {
+            background: #fff;
             border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.1);
         }
 
-        h1 {
-            font-weight: 700;
-        }
-
-        .section-title {
-            font-weight: 600;
-            border-left: 5px solid #2563eb;
-            padding-left: 12px;
-            margin-bottom: 20px;
-        }
-
-        .skill-chip {
-            padding: 10px 16px;
-            background-color: #2563eb;
-            color: #ffffff;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-            transition: 0.2s;
-        }
-
-        .skill-chip:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
-        }
-
-        /* ========== Modo obscuro ========== */
-        body.dark-mode {
-            background: #0f172a;
-            color: #e5ebeb;
-        }
-
-        body.dark-mode .navbar {
-            background-color: #020617 !important;
-        }
-
-        body.dark-mode .card {
-            background-color: #020617;
-            color: #e5eaeb;
-        }
-
-        body.dark-mode .section-title {
-            border-left-color: #60a5fa;
-        }
-
-        body.dark-mode .skill-chip {
-            background-color: #1d4ed8;
-        }
-
-        body.dark-mode a {
-            color: #ffffff;
-        }
-
-        /* ========== Evitar que la navbar tape las secciones ========== */
-        section {
-            scroll-margin-top: 90px;
-        }
-
-        /* ========== Modo obscuro para navbar ========== */
-        body.dark-mode .navbar {
-            background-color: #020617 !important;
-        }
-
-        body.dark-mode .navbar-brand,
-        body.dark-mode .nav-link {
-            color: #e5e7eb !important;
-        }
-
-        body.dark-mode .nav-link:hover,
-        body.dark-mode .navbar-brand:hover {
-            color: #38bdf8 !important;
-            background-color: transparent !important;
-        }
-
-        /* ========== Fecha y texto legibles ========== */
-        body.dark-mode .text-muted {
-            color: #9ca3af !important;
-        }
-
-        /* ========== Modo obscuro para cards ========== */
-        body.dark-mode .card {
-            background: linear-gradient(145deg, #020617, #020617);
-            color: #e5e7eb;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        /* ========== Certificados ========== */
-        .cert-card {
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .cert-card img {
-            width: 100%;
-            height: 200px;
+        .profile-img {
+            width: 170px;
+            height: 170px;
             object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid #0d6efd;
+        }
+
+        .section-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,.08);
+        }
+
+        .cert-card {
+            transition: all .3s ease;
+            cursor: pointer;
         }
 
         .cert-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(13,110,253,.35);
         }
 
-        .cert-title {
-            font-weight: 600;
-            font-size: 15px;
+        .icon {
+            color: #0d6efd;
         }
 
-        /* ========== Modo obscuro ========== */
-        body.dark-mode .cert-card {
-            background-color: #020617;
-        }
-
-        body.dark-mode .modal-content {
-            background-color: #020617;
-            color: #e5e7eb;
-        }
-
-        body.dark-mode .modal-header {
-            border-bottom: 1px solid #1e293b;
-        }
-
-        body.dark-mode .btn-close {
-            filter: invert(1);
-            opacity: 0.9;
-        }
-
-        body.dark-mode .btn-close:hover {
-            opacity: 1;
-        }
-
-        /* ========== Animaciones suaves (Hover) ========== */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        /* ========== Modo obscuro ========== */
-        body.dark-mode .card:hover {
-            box-shadow: 0 12px 30px rgba(96, 165, 250, 0.15);
-        }
-
-        /* ========== Botones ========== */
-        .btn {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        /* ========== Skill chips ========== */
-        .skill-chip {
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .skill-chip:hover {
-            transform: translateY(-4px) scale(1.03);
-        }
-
-        /* ========== Scroll reveal ========== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        body {
-            transition:
-                background-color 0.35s ease,
-                color 0.35s ease;
-        }
-
-        a,
-        button {
-            transition:
-                background-color 0.25s ease,
-                color 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
-        }
-
-        @media print {
-            body {
-                background: #ffffff !important;
-                color: #111827 !important;
-                font-family: 'Inter', sans-serif;
-                line-height: 1.5;
-                padding: 1cm;
-            }
-
-            nav, .dark-toggle, .btn { display: none !important; }
-
-            .container {
-                max-width: 100% !important;
-                padding: 0 !important;
-            }
-
-            .card {
-                box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
-                border-radius: 15px !important;
-                margin-bottom: 20px;
-                padding: 20px;
-                border: 1px solid #e5e7eb;
-            }
-
-            section {
-                opacity: 1 !important;
-                transform: none !important;
-                page-break-inside: avoid;
-            }
-
-            /* ========== Perfil ========== */
-            #perfil {
-                text-align: center;
-                margin-bottom: 25px;
-            }
-
-            #perfil h1 {
-                font-size: 32px;
-                font-weight: 700;
-                margin-top: 10px;
-            }
-
-            #perfil h4 {
-                color: #2563eb !important;
-                font-weight: 500;
-                margin-bottom: 12px;
-                font-size: 18px;
-            }
-
-            #perfil p {
-                text-align: justify;
-                max-width: 650px;
-                margin: 0 auto 15px auto;
-                font-size: 14px;
-            }
-
-            .perfil-img {
-                width: 160px;
-                height: 160px;
-                object-fit: contain;
-                border-radius: 50%;
-                border: 4px solid #2563eb;
-                background-color: #ffffff;
-                padding: 5px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                margin: 0 auto 15px auto;
-                display: block;
-            }
-
-            /* ========== Títulos de sección ========== */
-            .section-title {
-                font-size: 20px;
-                font-weight: 600;
-                margin-top: 5px;
-                margin-bottom: 20px;
-                border-left: 5px solid #2563eb;
-                padding-left: 12px;
-                color: #111827;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            }
-
-
-            /* ========== Habilidades ========== */
-            .skill-chip {
-                background: #f3f4f6 !important;
-                color: #111827 !important;
-                border: 1px solid #d1d5db;
-                font-size: 13px;
-                font-weight: 500;
-                border-radius: 20px;
-                margin: 2px 2px 3px 0;
-                display: inline-block;
-            }
-
-            /* ========== Evitar animaciones ========== */
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
-
-            /* ========== Imágenes ========== */
-            img {
-                max-width: 100%;
-                page-break-inside: avoid;
-            }
-
-            /* ======== PDF - Forzar columnas correctas en PDF sin romper Bootstrap ======== */
-            .references .col-md-6 {
-                width: 48.9% !important;
-                display: inline-block !important;
-                vertical-align: top !important;
-                margin-bottom: 12px !important;
-            }
-
-            /* ========== Quitar el gap excesivo del row de Bootstrap ========== */
-            .references {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 1px !important;
-            }
-
-            /* ========== Tarjeta de referencia más elegante ========== */
-            .ref-card {
-                background: #f9fafb !important;
-                border: 1px solid #d1d5db !important;
-                border-radius: 10px !important;
-                padding: 12px 15px !important;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-                page-break-inside: avoid !important;
-            }
-
-            /* ========== Nombre ========== */
-            .ref-nombre {
-                display: block !important;
-                font-weight: 700 !important;
-                font-size: 15px !important;
-                margin-bottom: 4px !important;
-            }
-
-            /* ========== Cargo debajo del nombre ========== */
-            .ref-cargo {
-                display: block !important;
-                font-size: 13px !important;
-                color: #374151 !important;
-                margin-bottom: 5px !important;
-            }
-
-            /* ========== Teléfono ========== */
-            .ref-telefono {
-                display: block !important;
-                font-size: 13px !important;
-                margin-bottom: 5px !important;
-            }
-
-            /* ========== Descripción ========== */
-            .ref-desc {
-                font-size: 12px !important;
-                margin: 0 !important;
-                color: #4b5563 !important;
-            }
-            
-        }
-        
-        .reference-item {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 18px 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: 0.2s ease;
-        }
-
-        .reference-item:hover {
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-        }
-
-        .reference-item h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 4px;
-        }
-
-        .reference-item .cargo {
+        .skill-badge {
+            background-color: #0d6efd;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 5px;
             font-size: 14px;
-            font-weight: 500;
-            color: #2563eb;
-            margin-bottom: 2px;
-        }
-
-        .reference-item .telefono {
-            font-size: 14px;
-            color: #374151;
         }
 
         .ref-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #0d6efd;
         }
+        @media print {
+    nav, .btn, .modal {
+        display: none !important;
+    }
 
-        .ref-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-        }
-
-        body.dark-mode .ref-card:hover {
-            box-shadow: 0 12px 30px rgba(96,165,250,0.15);
-        }
+    body {
+        background: white;
+    }
+}
 
     </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class = "navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-    <div class = "container">
-        <a class = "navbar-brand fw-bold" href = "#"> Hoja de Vida Automatica </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Hoja de Vida Automática</a>
 
-        <button class = "navbar-toggler" type = "button" data-bs-toggle = "collapse" data-bs-target = "#navbarNav">
-            <span class = "navbar-toggler-icon"> </span>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="#perfil">Perfil</a></li>
+            <li class="nav-item"><a class="nav-link" href="#educacion">Educación</a></li>
+            <li class="nav-item"><a class="nav-link" href="#experiencia">Experiencia</a></li>
+            <li class="nav-item"><a class="nav-link" href="#habilidades">Habilidades</a></li>
+            <li class="nav-item"><a class="nav-link" href="#certificados">Certificados</a></li>
+            <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#referencias">Referencias</a></li>
+            <li class="nav-item"><a class="nav-link" href="#garage">Venta de Garage</a></li>
+        </ul>
+
+       <button class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#pdfOptionsModal">
+            <i class="bi bi-file-earmark-arrow-down"></i> Descargar Hoja de Vida
         </button>
-
-        <div class = "collapse navbar-collapse" id = "navbarNav">
-            <ul class = "navbar-nav ms-auto">
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#perfil"> Perfil </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#educacion"> Educación </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#experiencia"> Experiencia Laboral </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#habilidades"> Habilidades </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#certificados"> Certificados </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#proyectos"> Proyectos </a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "#referencias"> Referencias </a>
-                </li>
-
-                <button class = "btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#pdfOptionsModal">
-                    📄 Descargar Hoja de Vida
-                </button>
-
-                <li class = "nav-item ms-3">
-                    <button class = "btn btn-outline" onclick = "toggleDarkMode ()" id = "darkBtn">
-                        🌙
-                    </button>
-                </li>
-
-            </ul>
-        </div> 
     </div>
 </nav>
 
-<!-- CONTENIDO -->
-<div class = "container py-5">
+<section id="perfil" class="container my-5">
+    <div class="profile-card">
+        <div class="row align-items-center">
 
-    <!-- PERFIL -->
-    <section id = "perfil" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <div class = "row align-items-center">
-
-                <div class = "col-md-3 text-center">
-                    {% if perfil.foto %}
-                        <img src = "{{ perfil.foto.url }}" class = "perfil-img mb-3">
-                    {% endif %}
-                </div>
-
-                <div class = "col-md-9"> 
-                    <h1 class = "mb-0"> {{ perfil.nombre }} </h1>
-                    <h4 class = "text-primary"> {{ perfil.profesion }} </h4>
-                    <p class = "mt-3"> {{ perfil.descripcion|linebreaksbr }} </p>
-
-                    <p class = "mb-1"> Correo: 📧 {{ perfil.email }} </p>
-                    <p class = "mb-1"> Ubicacion: 📍 {{ perfil.ubicacion }} </p>
-                    <p class = "mb-1"> Teléfono: 📱 {{ perfil.telefono }} </p>
-
-                    <div class = "d-flex align-items-center gap-3 mt-2">
-    
-                    <a href = "{{ perfil.linkedin }}" target = "_blank" class = "text-decoration-none d-flex align-items-center">
-                        <i class = "bi bi-linkedin me-1"> </i> {{ perfil.nombre }}
-                    </a>
-
-                    <a href = "{{ perfil.github }}" target = "_blank" class = "text-decoration-none d-flex align-items-center">
-                        <i class = "bi bi-github me-1"> </i> {{ perfil.nombre }}
-                    </a>
-
-                </div>
-
+            <div class="col-md-4 text-center">
+                {% if perfil.foto %}
+                    <img src="{{ perfil.foto.url }}" class="profile-img">
+                {% else %}
+                    <img src="{% static 'img/user.png' %}" class="profile-img">
+                {% endif %}
             </div>
-        </div>
-    </section>
 
-    <!-- EDUCACION -->
-    <section id = "educacion" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 🎓 Educación </h3>
+            <div class="col-md-8">
+                <h2 class="fw-bold mb-1">{{ perfil.nombres }} {{ perfil.apellidos }}</h2>
 
-            {% for edu in educaciones %}
-                <div class = "mb-3">
-                    
-                    <strong> 
-                        {{ edu.titulo }} 
-                    </strong>
+                <h5 class="text-primary mb-3">
+                    {{ perfil.profesion }}
+                </h5>
 
-                    <br>
-                        {{ edu.institucion }} 
-                    <br>
+                <p>{{ perfil.descripcion|linebreaksbr }}</p>
 
-                    <small class = "text-muted">
-                        {{ edu.fecha_inicio }} - {{ edu.fecha_fin|default:"Actualidad" }}
-                    </small>
-
-                </div>
-            {% endfor %}
-            
-        </div>
-    </section>
-
-    <!-- EXPERIENCIA -->
-    <section id = "experiencia" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 💼 Experiencia Laboral </h3>
-
-            {% for exp in experiencias %}
-                <div class = "mb-3">
-
-                    <strong> 
-                        {{ exp.cargo }} 
-                    </strong> - {{ exp.empresa }} <br>
-
-                    <small class = "text-muted">
-                        {{ exp.fecha_inicio }} - {{ exp.fecha_fin|default:"Actualidad" }}
-                    </small>
-
-                    <p class = "mt-2"> {{ exp.descripcion|linebreaksbr }} </p>
-
-                </div>
-            {% endfor %}
-
-        </div>
-    </section>
-
-    <!-- HABILIDADES -->
-    <section id = "habilidades" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 🧠 Habilidades </h3>
-
-            <div class = "d-flex flex-wrap gap-2">
-                {% for hab in habilidades %}
-
-                    <div class = "skill-chip">
-                        {{ hab.nombre }}
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-envelope icon"></i> {{ perfil.email }}</p>
+                        <p><i class="bi bi-telephone icon"></i> {{ perfil.telefono }}</p>
+                        <p><i class="bi bi-geo-alt icon"></i> {{ perfil.lugar_nacimiento }}</p>
                     </div>
-
-                {% endfor %}
-            </div>
-            
-        </div>
-    </section>
-
-    <!-- CERTIFICADOS -->
-    <section id = "certificados" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 📜 Certificados </h3>
-
-            <div class = "row g-4">
-                {% for cert in certificados %}
-
-                <div class = "col-md-4 col-sm-6">
-                    <div class = "card cert-card"
-                        data-bs-toggle = "modal"
-                        data-bs-target = "#certModal"
-                        onclick = "openCertModal ('{{ cert.imagen.url }}', '{{ cert.titulo }}')">
-
-                        <img src = "{{ cert.imagen.url }}" loading="lazy" alt = "{{ cert.titulo }}">
-                        
-                        <div class = "card-body text-center">
-                            
-                            <p class = "cert-title mb-0"> {{ cert.titulo }} </p>
-                            <small class = "text-muted"> {{ cert.institucion }} </small>
-
-                        </div>
-
+                    <div class="col-md-6">
+                        <p><i class="bi bi-person icon"></i> Sexo: {{ perfil.sexo }}</p>
+                        <p><i class="bi bi-flag icon"></i> Nacionalidad: {{ perfil.nacionalidad }}</p>
+                        <p><i class="bi bi-card-text icon"></i> Cédula: {{ perfil.cedula }}</p>
+                        <p><i class="bi bi-heart icon"></i> Estado civil: {{ perfil.estado_civil }}</p>
                     </div>
                 </div>
 
-                {% endfor %}
+                {% if perfil.sitio_web %}
+                <a href="{{ perfil.sitio_web }}" target="_blank" class="btn btn-dark btn-sm mt-2">
+                    <i class="bi bi-github"></i> GitHub / Portafolio
+                </a>
+                {% endif %}
             </div>
-
-        </div>
-    </section>
-
-    <!-- PROYECTOS -->
-    <section id = "proyectos" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 🚀 Proyectos </h3>
-
-            <div class = "row g-4">
-                {% for proy in proyectos %}
-
-                <div class = "col-md-6">
-                    <div class = "card h-100 p-3 shadow-sm">
-
-                        <h5 class = "fw-bold"> {{ proy.nombre }} </h5>
-                        <p> {{ proy.descripcion }} </p>
-
-                        <p class = "mb-2">
-                            <strong> Tecnologías: </strong> {{ proy.tecnologias }}
-                        </p>
-
-                        <div class = "d-flex gap-2">
-                            {% if proy.github %}
-                            <a href = "{{ proy.github }}" target = "_blank" class = "btn btn-outline-primary btn-sm">
-                                GitHub
-                            </a>
-                            {% endif %}
-
-                            {% if proy.demo %}
-                            <a href = "{{ proy.demo }}" target = "_blank" class = "btn btn-outline-success btn-sm">
-                                Demo
-                            </a>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-
-        </div>
-    </section>
-    
-    <!-- REFERENCIAS -->
-    <section id = "referencias" class = "mb-4 reveal">
-        <div class = "card shadow p-4">
-            <h3 class = "section-title"> 👥 Referencias </h3>
-
-            {% if referencias %}
-                <div class="row g-4 references">  
-                    {% for ref in referencias %}
-
-                    <div class="col-md-6 col-sm-12">
-                        <div class="ref-card p-3 reference-item">
-
-                            <strong>{{ ref.nombre }}</strong><br>
-                            <span>{{ ref.cargo }} - {{ ref.empresa }}</span><br>
-
-                            <!-- Teléfono -->
-                            <span class="phone">📞 {{ ref.telefono }}</span><br>
-
-                            <p class="mt-2">{{ ref.descripcion }}</p>
-
-                        </div>
-                    </div>
-
-                    {% endfor %}
-                </div>
-
-            {% else %}
-
-                <p class = "text-muted"> 
-                    Aún no se han agregado referencias laborales. 
-                </p>
-
-            {% endif %}
-
-        </div>
-    </section>
-
-</div>
-
-<!-- Bootstrap JS -->
-<script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"> </script>
-
-<script>
-    const btn = document.getElementById ("darkBtn");
-
-    function applyDarkMode (isDark) {
-        document.body.classList.toggle ("dark-mode", isDark);
-        btn.innerText = isDark ? "☀️" : "🌙";
-    }
-
-    function toggleDarkMode () {
-        const isDark = !document.body.classList.contains ("dark-mode");
-        localStorage.setItem ("darkMode", isDark);
-        applyDarkMode (isDark);
-    }
-
-    // Al cargar la página
-    const savedMode = localStorage.getItem ("darkMode") === "true";
-    applyDarkMode (savedMode);
-
-    // 🔥 ESCUCHAR CAMBIOS ENTRE PÁGINAS
-    window.addEventListener ("storage", (event) => {
-        if (event.key === "darkMode") {
-            applyDarkMode (event.newValue === "true");
-        }
-    });
-
-</script>
-
-<script>
-    function openCertModal (img, title) {
-        document.getElementById ("certModalImg").src = img;
-        document.getElementById ("certModalTitle").innerText = title;
-    }
-</script>
-
-<!-- MODAL CERTIFICADO -->
-<div class = "modal fade" id = "certModal" tabindex = "-1">
-    <div class = "modal-dialog modal-dialog-centered modal-lg">
-        <div class = "modal-content">
-
-            <div class = "modal-header">
-                <h5 class = "modal-title" id = "certModalTitle"> </h5>
-                <button type = "button" class = "btn-close" data-bs-dismiss = "modal"> </button>
-            </div>
-
-            <div class = "modal-body text-center">
-                <img id = "certModalImg" src = "" class = "img-fluid rounded">
-            </div>
-
         </div>
     </div>
-</div>
+</section>
 
+<section id="educacion" class="container my-5">
+    <h4 class="mb-3">🎓 Educación</h4>
+    {% for edu in educaciones %}
+    <div class="section-card mb-3">
+        <strong>{{ edu.titulo }}</strong><br>
+        <span class="text-primary">{{ edu.institucion }}</span><br>
+        <small class="text-muted">{{ edu.fecha_inicio }} - {{ edu.fecha_fin|default:"Actualidad" }}</small>
+    </div>
+    {% endfor %}
+</section>
+
+<section id="experiencia" class="container my-5">
+    <h4 class="mb-3">💼 Experiencia Laboral</h4>
+
+    {% for exp in experiencias %}
+    <div class="section-card mb-3">
+        <strong>{{ exp.cargo }}</strong><br>
+        <span class="text-primary">{{ exp.empresa }}</span><br>
+        <small class="text-muted">
+            {{ exp.fecha_inicio }} - {{ exp.fecha_fin|default:"Actualidad" }}
+        </small>
+
+        <p class="mt-2 mb-0">
+            {{ exp.descripcion }}
+        </p>
+    </div>
+    {% endfor %}
+</section>
+
+<section id="habilidades" class="container my-5">
+    <h4 class="mb-3">🧠 Habilidades</h4>
+    {% for hab in habilidades %}
+        <span class="skill-badge">{{ hab.nombre }}</span>
+    {% endfor %}
+</section>
+
+<section id="certificados" class="container my-5">
+    <h4 class="mb-3">📜 Certificados</h4>
+    <div class="row">
+        {% for cert in certificados %}
+        <div class="col-md-4 mb-4">
+            <div class="section-card cert-card text-center">
+                {% if cert.imagen %}
+                <a href="{{ cert.imagen.url }}" target="_blank">
+                    <img src="{{ cert.imagen.url }}" class="img-fluid rounded mb-3">
+                </a>
+                {% endif %}
+                <strong>{{ cert.titulo }}</strong><br>
+                <small class="text-muted">{{ cert.institucion }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="garage" class="container my-5">
+    <h4 class="mb-3">🛒 Venta de Garage</h4>
+
+    <div class="row">
+        {% for venta in ventas %}
+        <div class="col-md-4 mb-4">
+            <div class="section-card cert-card text-center">
+
+                {% if venta.imagen %}
+                <a href="{{ venta.imagen.url }}" target="_blank">
+                    <img src="{{ venta.imagen.url }}" 
+                         class="img-fluid rounded mb-3"
+                         style="max-height: 140px; object-fit: cover;">
+                </a>
+                {% endif %}
+
+                <strong>{{ venta.nombre_producto }}</strong><br>
+
+                <small class="text-muted d-block mt-1">
+                    {{ venta.descripcion|truncatechars:60 }}
+                </small>
+
+                <span class="badge bg-success mt-2">
+                    $ {{ venta.precio }}
+                </span>
+
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No hay productos disponibles.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="proyectos" class="container my-5">
+    <h4 class="mb-3">🚀 Proyectos</h4>
+
+    <div class="row">
+        {% for proyecto in proyectos %}
+        <div class="col-md-6 mb-4">
+            <div class="section-card">
+                <strong>{{ proyecto.nombre }}</strong>
+
+                <p class="mt-2">
+                    {{ proyecto.descripcion }}
+                </p>
+
+                <small class="text-muted">
+                    Tecnologías: {{ proyecto.tecnologias }}
+                </small>
+
+                <div class="mt-2">
+                    {% if proyecto.github %}
+                        <a href="{{ proyecto.github }}" target="_blank" class="btn btn-dark btn-sm me-2">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    {% endif %}
+
+                    {% if proyecto.demo %}
+                        <a href="{{ proyecto.demo }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            Demo
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="referencias" class="container my-5">
+    <h4 class="mb-3">📞 Referencias</h4>
+    <div class="row">
+        {% for ref in referencias %}
+        <div class="col-md-4 mb-3">
+            <div class="section-card ref-card">
+                <strong class="text-primary">{{ ref.nombre }}</strong><br>
+                {{ ref.cargo }}<br>
+                <small>{{ ref.empresa }}</small><br>
+                <small>{{ ref.telefono }} | {{ ref.email }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const reveals = document.querySelectorAll (".reveal");
 
-    const observer = new IntersectionObserver (
-        entries => {
-            entries.forEach (entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add ("active");
-                    observer.unobserve(entry.target);
-                }
-            });
-        },
-
-        {
-            threshold: 0.15
-        }
-    );
-
-    reveals.forEach (section => {
-        observer.observe (section);
-    });
-
-</script>
-
-<script>
 function generatePDF() {
-    const wasDark = document.body.classList.contains("dark-mode");
-    if (wasDark) document.body.classList.remove("dark-mode");
 
-    // Obtener todas las secciones que el usuario quiere incluir
-    const checkboxes = document.querySelectorAll(".pdf-option");
-    const toHide = [];
+    const hiddenSections = [];
 
-    checkboxes.forEach(cb => {
-        const selector = cb.value;
-        const element = document.querySelector(selector);
-
-        if (!cb.checked && element) {
-            element.dataset.hiddenByPdf = "true";
-            element.style.display = "none";
-            toHide.push(element);
+    document.querySelectorAll(".pdf-option").forEach(function(cb) {
+        const section = document.querySelector(cb.value);
+        if (section && !cb.checked) {
+            section.style.display = "none";
+            hiddenSections.push(section);
         }
     });
 
-    // Cerrar modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('pdfOptionsModal'));
-    modal.hide();
+    const modalEl = document.getElementById("pdfOptionsModal");
+    if (modalEl) {
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+    }
 
-    // Descargar PDF
-    setTimeout(() => {
+    setTimeout(function () {
         window.print();
 
-        // Restaurar secciones ocultas
-        toHide.forEach(el => {
-            el.style.display = "";
-            delete el.dataset.hiddenByPdf;
+        hiddenSections.forEach(function(sec) {
+            sec.style.display = "";
         });
-
-        if (wasDark) document.body.classList.add("dark-mode");
-    }, 200);
+    }, 300);
 }
 </script>
 
-<!-- MODAL PARA SELECCIONAR SECCIONES -->
+
 <div class="modal fade" id="pdfOptionsModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Seleccionar contenido del PDF</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+      <div class="modal-header">
+        <h5 class="modal-title">Seleccionar contenido del PDF</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-            <div class="modal-body">
-                <p class="mb-2">Elige qué secciones deseas incluir en tu PDF:</p>
+      <div class="modal-body">
+        <p>Elige qué secciones deseas incluir:</p>
 
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#perfil" checked>
-                    <label class="form-check-label">Perfil</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#educacion" checked>
-                    <label class="form-check-label">Educación</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#experiencia" checked>
-                    <label class="form-check-label">Experiencia Laboral</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#habilidades" checked>
-                    <label class="form-check-label">Habilidades</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#certificados" checked>
-                    <label class="form-check-label">Certificados</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#proyectos" checked>
-                    <label class="form-check-label">Proyectos</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input pdf-option" type="checkbox" value="#referencias" checked>
-                    <label class="form-check-label">Referencias</label>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button class="btn btn-primary" onclick="generatePDF()">Generar PDF</button>
-            </div>
-
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#perfil" checked>
+          <label class="form-check-label">Perfil</label>
         </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#educacion" checked>
+          <label class="form-check-label">Educación</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#experiencia" checked>
+          <label class="form-check-label">Experiencia</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#habilidades" checked>
+          <label class="form-check-label">Habilidades</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#certificados" checked>
+          <label class="form-check-label">Certificados</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#proyectos" checked>
+          <label class="form-check-label">Proyectos</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#referencias" checked>
+          <label class="form-check-label">Referencias</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input pdf-option" type="checkbox" value="#garage">
+          <label class="form-check-label">Venta de Garage</label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="generatePDF()">Generar PDF</button>
+      </div>
+
     </div>
+  </div>
 </div>
 
 </body>
-
 </html>
